@@ -4,7 +4,7 @@ import Home from "../pages/home"
 const Private = () => {
     const token = localStorage.getItem("token")
 
-    return token ? <Home /> : <Navigate to="/register" replace />
+    return token ? <Home /> : <Navigate to="/login" replace />
 }
 
 export default Private

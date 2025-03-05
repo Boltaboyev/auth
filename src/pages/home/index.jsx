@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from "react"
 import Cookies from "js-cookie"
 import {Button, Modal, Input, Form} from "antd"
+import {useNavigate} from "react-router-dom"
 
 const Home = () => {
     const [user, setUser] = useState(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         const userCookie = Cookies.get("user")
@@ -23,6 +26,13 @@ const Home = () => {
         setUser(updatedUser)
         Cookies.set("user", JSON.stringify(updatedUser))
         setIsModalOpen(false)
+    }
+
+    const logout = () => {
+        localStorage.removeItem("token")
+        localStorage.removeItem("email")
+        Cookies.remove("user")
+        navigate("/login")
     }
 
     return (
@@ -87,6 +97,14 @@ const Home = () => {
                                 Edit profile
                             </Button>
                         </div>
+
+                        <Button
+                            onClick={logout}
+                            type="primary"
+                            danger
+                            className="!absolute top-2.5 right-2.5">
+                            logout
+                        </Button>
                     </div>
                 ) : (
                     <p className="opacity-60">No user data found.</p>

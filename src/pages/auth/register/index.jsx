@@ -1,6 +1,7 @@
 import {Button, Form, Input} from "antd"
 import React from "react"
 import {registerMutation} from "../../../hooks/useQueryHandler/useQueryAction"
+import {Link} from "react-router-dom"
 
 const Register = () => {
     const {mutate, isLoading} = registerMutation()
@@ -57,6 +58,13 @@ const Register = () => {
                     ]}>
                     <Input.Password size="large" placeholder="password" />
                 </Form.Item>
+
+                <p className="mb-4">
+                    You have an account?{" "}
+                    <Link to="/login" className="text-blue-500 underline">
+                        Log in
+                    </Link>
+                </p>
 
                 <Button
                     disabled={isLoading}

@@ -1,6 +1,7 @@
-import {Button, Form, Input} from "antd"
 import React from "react"
+import {Button, Form, Input} from "antd"
 import {loginMutation} from "../../../hooks/useQueryHandler/useQueryAction"
+import {Link, useNavigate} from "react-router-dom"
 
 const Login = () => {
     const {mutate, isLoading} = loginMutation()
@@ -35,6 +36,13 @@ const Login = () => {
                     ]}>
                     <Input.Password size="large" placeholder="password" />
                 </Form.Item>
+
+                <p className="mb-4">
+                    Don’t have an account?{" "}
+                    <Link to="/register" className="text-blue-500 underline">
+                        Sign up
+                    </Link>
+                </p>
 
                 <Button
                     disabled={isLoading}
