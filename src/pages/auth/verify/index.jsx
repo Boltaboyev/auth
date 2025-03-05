@@ -7,7 +7,6 @@ const Verify = () => {
     const {mutate, isLoading} = verifyMutation()
 
     const onChange = (text) => {
-        console.log("onChange:", text)
         setCode(text)
     }
 
@@ -17,8 +16,7 @@ const Verify = () => {
 
     const verify = () => {
         let email = localStorage.getItem("email")
-        mutate({email:email, code: code})
-        console.log({email, code})
+        mutate({email, code: code})
     }
 
     return (

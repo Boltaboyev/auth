@@ -30,24 +30,21 @@ export const verifyMutation = () => {
         mutationFn: (data) =>
             axios({ url: "api/auth/verify", method: "POST", data }),
         onSuccess: (data) => {
-            console.log("Verify response:", data);
-
-            const token = data?.data?.token;
-            if (!token) {
-                toast.error("Token not received");
-                console.error("No token in response:", data);
-                return;
-            }
+            console.log(data);
+            
+            const token = data?.token
 
             localStorage.setItem("token", token);
-            document.cookie = `user=${JSON.stringify(data.data)}; expires=Mon, 10 March 2025 17:00:00 UTC`;
+
+            document.cookie = `user=${JSON.stringify(data)}; expires=Wed, 5 March 2025 21:00:00 UTC`;
+
             toast.success("Successfully registered");
+
             navigate("/");
         },
         onError: (error) => {
-            console.error("Verification error:", error);
-            const errorMessage = error.response?.data?.message || "Invalid code";
-            toast.error(errorMessage);
+            toast.error(error.message);
+            console.log(error);
         },
     });
 };
