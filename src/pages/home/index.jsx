@@ -107,9 +107,6 @@ const Home = () => {
                         <Form.Item name="last_name" label="Last Name">
                             <Input placeholder="Enter last name" />
                         </Form.Item>
-                        <Form.Item name="email" label="Email">
-                            <Input placeholder="Enter email" />
-                        </Form.Item>
                         <Form.Item name="address" label="Address">
                             <Input placeholder="Enter address" />
                         </Form.Item>
