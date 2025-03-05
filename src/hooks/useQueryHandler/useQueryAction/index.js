@@ -48,3 +48,25 @@ export const verifyMutation = () => {
         },
     });
 };
+
+
+export const loginMutation = () => {
+    const navigate = useNavigate();
+    const axios = useAxios();
+    return useMutation({
+        mutationKey: "login",
+        mutationFn: (data) =>
+            axios({ url: "api/auth/sign-in", method: "POST", data }),
+        onSuccess: (data) => {
+            const token = data?.token;
+            localStorage.setItem("token", token);
+            document.cookie = `user=${JSON.stringify(data)}; expires=Wed, 5 March 2025 21:00:00 UTC`;
+            toast.success("Successfully logged in");
+            navigate("/");
+        },
+        onError: (error) => {
+            toast.error(error.message);
+            console.log(error);
+        },
+    });
+};
