@@ -1,10 +1,11 @@
-import {Button, Form, Input} from "antd"
 import React from "react"
-import {registerMutation} from "../../../hooks/useQueryHandler/useQueryAction"
 import {Link} from "react-router-dom"
+import {Button, Form, Input} from "antd"
+
+import {registerMutation} from "../../../hooks/useQueryHandler/useQueryAction"
 
 const Register = () => {
-    const {mutate, isLoading} = registerMutation()
+    const {mutate, isPending} = registerMutation()
 
     const signIn = (e) => {
         mutate(e)
@@ -67,12 +68,12 @@ const Register = () => {
                 </p>
 
                 <Button
-                    disabled={isLoading}
+                    loading={isPending}
                     className="w-full"
                     size="large"
                     type="primary"
                     htmlType="submit">
-                    {isLoading ? "loading..." : "Sign up"}
+                    Sign up
                 </Button>
             </Form>
         </section>

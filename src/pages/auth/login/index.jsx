@@ -1,10 +1,11 @@
 import React from "react"
+import {Link} from "react-router-dom"
 import {Button, Form, Input} from "antd"
+
 import {loginMutation} from "../../../hooks/useQueryHandler/useQueryAction"
-import {Link, useNavigate} from "react-router-dom"
 
 const Login = () => {
-    const {mutate, isLoading} = loginMutation()
+    const {mutate, isPending} = loginMutation()
 
     const logIn = (e) => {
         mutate(e)
@@ -45,12 +46,12 @@ const Login = () => {
                 </p>
 
                 <Button
-                    disabled={isLoading}
+                    loading={isPending}
                     className="w-full"
                     size="large"
                     type="primary"
                     htmlType="submit">
-                    {isLoading ? "loading..." : "Login"}
+                    Login
                 </Button>
             </Form>
         </section>

@@ -1,12 +1,17 @@
 import React, {useEffect, useState} from "react"
+import {Link, useNavigate} from "react-router-dom"
 import Cookies from "js-cookie"
-import {Button, Modal, Input, Form} from "antd"
-import {useNavigate} from "react-router-dom"
+import {Button, Drawer, Input, Form} from "antd"
+
+import {useEditMutation} from "../../hooks/useQueryHandler/useQueryAction"
+
+// icons
+import {LiaEdit} from "react-icons/lia"
 
 const Home = () => {
+    const {mutate, isPending} = useEditMutation()
     const [user, setUser] = useState(null)
-    const [isModalOpen, setIsModalOpen] = useState(false)
-
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -22,10 +27,21 @@ const Home = () => {
     }, [])
 
     const handleEdit = (values) => {
-        const updatedUser = {...user, ...values}
-        setUser(updatedUser)
-        Cookies.set("user", JSON.stringify(updatedUser))
-        setIsModalOpen(false)
+        const allowedFields = {
+            first_name: values.first_name,
+            last_name: values.last_name,
+            email: values.email,
+            address: values.address,
+        }
+
+        mutate(allowedFields, {
+            onSuccess: () => {
+                const updatedUser = {...user, ...allowedFields}
+                setUser(updatedUser)
+                Cookies.set("user", JSON.stringify(updatedUser))
+                setIsDrawerOpen(false)
+            },
+        })
     }
 
     const logout = () => {
@@ -87,13 +103,24 @@ const Home = () => {
                                     {new Date(user.createdAt).toLocaleString()}
                                 </strong>
                             </li>
+                            <li className="p-[15px] border-b border-gray-200 flex justify-between items-center">
+                                <p className="opacity-60">Password:</p>
+                                <div className="flex justify-center items-center gap-[20px]">
+                                    <strong className="opacity-80">
+                                        ********
+                                    </strong>
+                                    <Link to={"/verify-email"} className="z-10">
+                                        <LiaEdit className="text-blue-700 text-[25px] cursor-pointer" />
+                                    </Link>
+                                </div>
+                            </li>
                         </ul>
                         <div className="w-full p-[10px]">
                             <Button
                                 type="primary"
                                 size="large"
                                 className="w-full"
-                                onClick={() => setIsModalOpen(true)}>
+                                onClick={() => setIsDrawerOpen(true)}>
                                 Edit profile
                             </Button>
                         </div>
@@ -110,32 +137,68 @@ const Home = () => {
                     <p className="opacity-60">No user data found.</p>
                 )}
 
-                <Modal
+                <Drawer
                     title="Edit Profile"
-                    open={isModalOpen}
-                    onCancel={() => setIsModalOpen(false)}
-                    footer={null}>
+                    open={isDrawerOpen}
+                    onClose={() => setIsDrawerOpen(false)}
+                    width={400}>
                     <Form
                         layout="vertical"
                         initialValues={user}
                         onFinish={handleEdit}>
-                        <Form.Item name="first_name" label="First Name">
+                        <Form.Item
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input your first name!",
+                                },
+                            ]}
+                            name="first_name"
+                            label="First Name">
                             <Input placeholder="Enter first name" />
                         </Form.Item>
-                        <Form.Item name="last_name" label="Last Name">
+                        <Form.Item
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input last name!",
+                                },
+                            ]}
+                            name="last_name"
+                            label="Last Name">
                             <Input placeholder="Enter last name" />
                         </Form.Item>
-                        <Form.Item name="address" label="Address">
+                        <Form.Item
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input your address!",
+                                },
+                            ]}
+                            name="address"
+                            label="Address">
                             <Input placeholder="Enter address" />
                         </Form.Item>
+                        <Form.Item
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input your email!",
+                                },
+                            ]}
+                            name="email"
+                            label="Email">
+                            <Input placeholder="Enter email" />
+                        </Form.Item>
                         <Button
+                            loading={isPending}
                             type="primary"
                             htmlType="submit"
                             className="w-full">
                             Save Changes
                         </Button>
                     </Form>
-                </Modal>
+                </Drawer>
             </div>
         </section>
     )

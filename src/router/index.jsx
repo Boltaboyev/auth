@@ -4,6 +4,9 @@ import Register from "../pages/auth/register"
 import Login from "../pages/auth/login"
 import Verify from "../pages/auth/verify"
 import Private from "../private"
+import VerifyEmail from "../pages/change-password/verify-email"
+import VerifyCode from "../pages/change-password/verify-code"
+import SetPassword from "../pages/change-password/set-password"
 
 export const router = createBrowserRouter([
     {
@@ -21,5 +24,17 @@ export const router = createBrowserRouter([
     {
         path: "/verify",
         element: <Verify />,
+    },
+    {
+        path: "/verify-email",
+        element: <VerifyEmail />,
+    },
+    {
+        path: "/verify-code",
+        element: <VerifyCode />,
+    },
+    {
+        path: "/set-password",
+        element: <SetPassword />,
     },
 ])
